@@ -123,7 +123,7 @@ export default function HomePage() {
                   size="lg"
                   variant="outline"
                   className="border-brand-dark/20 bg-white text-brand-dark hover:bg-white/80"
-                  render={<Link href="/register/parceiro" />}
+                  render={<Link href="/register/partner" />}
                 >
                   <UserRound className="size-4" />
                   Sou parceiro / organizador
@@ -201,7 +201,7 @@ export default function HomePage() {
               size="lg"
               variant="outline"
               className="border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
-              render={<Link href="/register/parceiro" />}
+              render={<Link href="/register/partner" />}
             >
               Quero ser parceiro
               <ArrowRight className="size-4" />
