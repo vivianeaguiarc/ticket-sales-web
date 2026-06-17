@@ -1,8 +1,8 @@
-import Link from "next/link"
-import { ArrowRight, CalendarDays, ShieldCheck, Ticket } from "lucide-react"
+import { ArrowRight, CalendarDays, ShieldCheck, Ticket } from 'lucide-react'
+import Link from 'next/link'
 
-import { Container } from "@/components/layout/container"
-import { Button } from "@/components/ui/button"
+import { Container } from '@/components/layout/container'
+import { Button } from '@/components/ui/button'
 
 export default function HomePage() {
   return (

@@ -1,12 +1,12 @@
-import Link from "next/link"
-import { Ticket } from "lucide-react"
+import { Ticket } from 'lucide-react'
+import Link from 'next/link'
 
-import { Container } from "@/components/layout/container"
-import { Button } from "@/components/ui/button"
+import { Container } from '@/components/layout/container'
+import { Button } from '@/components/ui/button'
 
 const navLinks = [
-  { href: "/events", label: "Eventos" },
-  { href: "/login", label: "Entrar" },
+  { href: '/events', label: 'Eventos' },
+  { href: '/login', label: 'Entrar' }
 ]
 
 export function Navbar() {
@@ -34,7 +34,12 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="sm:hidden" render={<Link href="/events" />}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="sm:hidden"
+              render={<Link href="/events" />}
+            >
               Eventos
             </Button>
             <Button variant="outline" size="sm" render={<Link href="/register/cliente" />}>

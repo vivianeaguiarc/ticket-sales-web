@@ -1,10 +1,10 @@
-import Link from "next/link"
+import Link from 'next/link'
 
-import { Container } from "@/components/layout/container"
+import { Container } from '@/components/layout/container'
 
 const footerLinks = [
-  { href: "https://ticket-sales-3su2.onrender.com/docs/", label: "API Docs" },
-  { href: "https://github.com/vivianeaguiarc/ticket-sales", label: "Backend" },
+  { href: 'https://ticket-sales-3su2.onrender.com/docs/', label: 'API Docs' },
+  { href: 'https://github.com/vivianeaguiarc/ticket-sales', label: 'Backend' }
 ]
 
 export function Footer() {

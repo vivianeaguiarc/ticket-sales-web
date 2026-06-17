@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { useState } from "react"
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useState } from 'react'
 
 type QueryProviderProps = {
   children: React.ReactNode
@@ -15,9 +15,9 @@ export function QueryProvider({ children }: QueryProviderProps) {
           queries: {
             staleTime: 60 * 1000,
             retry: 1,
-            refetchOnWindowFocus: false,
-          },
-        },
+            refetchOnWindowFocus: false
+          }
+        }
       })
   )
 
