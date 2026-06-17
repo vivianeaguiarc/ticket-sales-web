@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Ticket Sales',
-    template: '%s | Ticket Sales'
+    default: 'TicketSales',
+    template: '%s | TicketSales'
   },
   description:
     'Plataforma web para descobrir eventos, reservar e comprar ingressos com a API Ticket Sales.'
