@@ -7,5 +7,9 @@ export const purchaseService = {
     const response = await apiClient.post<Purchase>(endpoints.partners.purchases, data)
 
     return response.data
+  },
+
+  async cancelPurchase(purchaseId: number): Promise<void> {
+    await apiClient.post(endpoints.partners.cancelPurchase(purchaseId))
   }
 }

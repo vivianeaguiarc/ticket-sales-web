@@ -115,3 +115,56 @@ export function getApiErrorMessage(error: unknown, fallback = FRIENDLY_GENERIC_E
 
   return fallback
 }
+
+const FRIENDLY_DASHBOARD_ERROR =
+  'Não foi possível carregar seus dados. Tente novamente em instantes.'
+const FRIENDLY_CANCEL_PURCHASE_ERROR =
+  'Não foi possível cancelar a compra. Verifique o status e tente novamente.'
+
+export function getDashboardErrorMessage(error: unknown): string {
+  if (!isAxiosError(error)) {
+    return FRIENDLY_DASHBOARD_ERROR
+  }
+
+  if (!error.response) {
+    return FRIENDLY_NETWORK_ERROR
+  }
+
+  const status = error.response.status
+
+  if (status === 401) {
+    return 'Sua sessão expirou. Faça login novamente.'
+  }
+
+  if (status === 403) {
+    return FRIENDLY_CUSTOMER_ONLY
+  }
+
+  if (status === 404) {
+    return 'Histórico indisponível no momento. Tente novamente mais tarde.'
+  }
+
+  return FRIENDLY_DASHBOARD_ERROR
+}
+
+export function getCancelPurchaseErrorMessage(error: unknown): string {
+  if (!isAxiosError(error)) {
+    return FRIENDLY_CANCEL_PURCHASE_ERROR
+  }
+
+  if (!error.response) {
+    return FRIENDLY_NETWORK_ERROR
+  }
+
+  const status = error.response.status
+
+  if (status === 404) {
+    return 'Compra não encontrada.'
+  }
+
+  if (status === 409) {
+    return 'Esta compra já foi cancelada.'
+  }
+
+  return FRIENDLY_CANCEL_PURCHASE_ERROR
+}
