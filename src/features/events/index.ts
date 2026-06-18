@@ -1,1 +1,9 @@
-// Events feature module
+export { EventCard } from './components/event-card'
+export { EventDetailsHeader } from './components/event-details-header'
+export { EventTicketsList } from './components/event-tickets-list'
+export { TicketStatusBadge } from './components/ticket-status-badge'
+export { useEventDetails } from './hooks/use-event-details'
+export { useEventTickets } from './hooks/use-event-tickets'
+export { useEvents } from './hooks/use-events'
+export { eventService } from './services/event-service'
+export type { Event, EventDetails, Ticket, TicketStatus } from './types/event-types'

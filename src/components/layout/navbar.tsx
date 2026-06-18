@@ -35,7 +35,12 @@ export function Navbar() {
 
           <nav className="hidden items-center gap-8 text-sm font-medium lg:flex">
             {navLinks.map((link) => {
-              const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href)
+              const isActive =
+                link.href === '/'
+                  ? pathname === '/'
+                  : link.href.startsWith('/')
+                    ? pathname === link.href || pathname.startsWith(`${link.href}/`)
+                    : false
 
               return (
                 <Link
