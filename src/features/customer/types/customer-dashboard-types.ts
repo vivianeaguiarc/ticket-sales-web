@@ -1,40 +1,52 @@
+import type { TicketStatus } from '@/features/events/types/event-types'
 import type { PurchaseStatus } from '@/features/purchases/types/purchase-types'
-import type { Reservation } from '@/features/reservations/types/reservation-types'
 
 export type ReservationDisplayStatus = 'reserved' | 'cancelled' | 'expired'
 
 export type DashboardStatus =
   | PurchaseStatus
   | ReservationDisplayStatus
-  | 'sold'
-  | 'available'
+  | TicketStatus
   | 'pending'
   | 'error'
 
+export interface CustomerEventSummary {
+  id: number
+  name: string
+  date: string
+  location: string
+}
+
 export interface CustomerPurchaseTicket {
-  id?: number
-  ticket_id: number
-  location?: string
-  event_id?: number
-  event_name?: string
+  id: number
+  location: string
+  price: number
+  status: TicketStatus
+  event: CustomerEventSummary
 }
 
 export interface CustomerPurchase {
   id: number
-  customer_id: number
-  purchase_date: string
-  total_amount: number
   status: PurchaseStatus
-  tickets?: CustomerPurchaseTicket[]
+  total_amount: number
+  purchase_date: string
+  tickets: CustomerPurchaseTicket[]
 }
 
-export interface CustomerReservation extends Reservation {
-  event_id?: number
-  event_name?: string
-  event_location?: string
-  event_date?: string
-  ticket_location?: string
-  ticket_price?: number
+export interface CustomerReservationTicket {
+  id: number
+  location: string
+  price: number
+  status: TicketStatus
+  event: CustomerEventSummary
+}
+
+export interface CustomerReservation {
+  id: number
+  status: 'reserved' | 'cancelled'
+  reservation_date: string
+  expires_at: string
+  ticket: CustomerReservationTicket
 }
 
 export interface CustomerDashboardStats {

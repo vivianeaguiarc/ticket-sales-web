@@ -40,7 +40,7 @@ export function CustomerStatsCards({ stats, className }: CustomerStatsCardsProps
       <StatCard
         title="Total de compras"
         value={stats.totalPurchases}
-        description="Compras registradas nesta sessão"
+        description="Compras registradas na sua conta"
         icon={ShoppingBag}
       />
       <StatCard

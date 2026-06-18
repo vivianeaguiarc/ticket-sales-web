@@ -1,10 +1,12 @@
 'use client'
 
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 
-import { HAS_CUSTOMER_RESERVATIONS_LIST_ENDPOINT } from '@/features/customer/constants/api-limitations'
 import { customerQueryKeys } from '@/features/customer/constants/query-keys'
+import { customerService } from '@/features/customer/services/customer-service'
 import type { CustomerReservation } from '@/features/customer/types/customer-dashboard-types'
+import { getDashboardErrorMessage } from '@/lib/api/api-error'
 
 function sortReservations(reservations: CustomerReservation[]): CustomerReservation[] {
   return [...reservations].sort(
@@ -12,33 +14,23 @@ function sortReservations(reservations: CustomerReservation[]): CustomerReservat
   )
 }
 
-/**
- * Sem endpoint GET no Swagger — lê apenas cache em memória da sessão atual.
- */
 export function useCustomerReservations() {
-  const queryClient = useQueryClient()
-
   const query = useQuery({
     queryKey: customerQueryKeys.reservations(),
-    queryFn: async () => {
-      if (HAS_CUSTOMER_RESERVATIONS_LIST_ENDPOINT) {
-        // TODO: chamar reservationService.listByCustomer() quando a API expor o endpoint.
-        return []
-      }
-
-      return queryClient.getQueryData<CustomerReservation[]>(customerQueryKeys.reservations()) ?? []
-    },
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-    refetchInterval: 60_000
+    queryFn: () => customerService.getReservations(),
+    staleTime: 30 * 1000,
+    refetchInterval: 60 * 1000
   })
+
+  const isUnauthorized =
+    query.isError && isAxiosError(query.error) && query.error.response?.status === 401
 
   return {
     reservations: sortReservations(query.data ?? []),
     isLoading: query.isLoading,
     isError: query.isError,
-    hasListEndpoint: HAS_CUSTOMER_RESERVATIONS_LIST_ENDPOINT,
-    isSessionCache: !HAS_CUSTOMER_RESERVATIONS_LIST_ENDPOINT,
+    isUnauthorized,
+    errorMessage: query.isError ? getDashboardErrorMessage(query.error) : null,
     refetch: query.refetch
   }
 }

@@ -1,10 +1,12 @@
 'use client'
 
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 
-import { HAS_CUSTOMER_PURCHASES_LIST_ENDPOINT } from '@/features/customer/constants/api-limitations'
 import { customerQueryKeys } from '@/features/customer/constants/query-keys'
+import { customerService } from '@/features/customer/services/customer-service'
 import type { CustomerPurchase } from '@/features/customer/types/customer-dashboard-types'
+import { getDashboardErrorMessage } from '@/lib/api/api-error'
 
 function sortPurchases(purchases: CustomerPurchase[]): CustomerPurchase[] {
   return [...purchases].sort(
@@ -12,32 +14,22 @@ function sortPurchases(purchases: CustomerPurchase[]): CustomerPurchase[] {
   )
 }
 
-/**
- * Sem endpoint GET no Swagger — lê apenas cache em memória da sessão atual.
- */
 export function useCustomerPurchases() {
-  const queryClient = useQueryClient()
-
   const query = useQuery({
     queryKey: customerQueryKeys.purchases(),
-    queryFn: async () => {
-      if (HAS_CUSTOMER_PURCHASES_LIST_ENDPOINT) {
-        // TODO: chamar purchaseService.listByCustomer() quando a API expor o endpoint.
-        return []
-      }
-
-      return queryClient.getQueryData<CustomerPurchase[]>(customerQueryKeys.purchases()) ?? []
-    },
-    staleTime: Infinity,
-    refetchOnWindowFocus: false
+    queryFn: () => customerService.getPurchases(),
+    staleTime: 30 * 1000
   })
+
+  const isUnauthorized =
+    query.isError && isAxiosError(query.error) && query.error.response?.status === 401
 
   return {
     purchases: sortPurchases(query.data ?? []),
     isLoading: query.isLoading,
     isError: query.isError,
-    hasListEndpoint: HAS_CUSTOMER_PURCHASES_LIST_ENDPOINT,
-    isSessionCache: !HAS_CUSTOMER_PURCHASES_LIST_ENDPOINT,
+    isUnauthorized,
+    errorMessage: query.isError ? getDashboardErrorMessage(query.error) : null,
     refetch: query.refetch
   }
 }

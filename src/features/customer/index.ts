@@ -9,11 +9,14 @@ export { useCancelPurchase } from '@/features/customer/hooks/use-cancel-purchase
 export { useCustomerDashboard } from '@/features/customer/hooks/use-customer-dashboard'
 export { useCustomerPurchases } from '@/features/customer/hooks/use-customer-purchases'
 export { useCustomerReservations } from '@/features/customer/hooks/use-customer-reservations'
+export { customerService } from '@/features/customer/services/customer-service'
 export type {
   CustomerDashboardStats,
+  CustomerEventSummary,
   CustomerPurchase,
   CustomerPurchaseTicket,
   CustomerReservation,
+  CustomerReservationTicket,
   DashboardStatus,
   ReservationDisplayStatus
 } from '@/features/customer/types/customer-dashboard-types'

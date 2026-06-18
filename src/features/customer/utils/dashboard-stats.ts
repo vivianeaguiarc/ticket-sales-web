@@ -11,11 +11,7 @@ function countAcquiredTickets(purchases: CustomerPurchase[]): number {
       return total
     }
 
-    if (purchase.tickets?.length) {
-      return total + purchase.tickets.length
-    }
-
-    return total + 1
+    return total + purchase.tickets.length
   }, 0)
 }
 

@@ -13,7 +13,9 @@ export const endpoints = {
     cancelPurchase: (purchaseId: number) => `/partners/events/purchases/${purchaseId}/cancel`
   },
   customers: {
-    register: '/customers/register'
+    register: '/customers/register',
+    purchases: '/customers/purchases',
+    reservations: '/customers/reservations'
   },
   events: {
     list: '/events',

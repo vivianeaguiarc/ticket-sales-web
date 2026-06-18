@@ -19,8 +19,7 @@ export function useCustomerDashboard() {
     [purchasesState.purchases, reservationsState.reservations]
   )
 
-  const isLoading = purchasesState.isLoading || reservationsState.isLoading
-  const isError = purchasesState.isError || reservationsState.isError
+  const isSummaryLoading = purchasesState.isLoading || reservationsState.isLoading
 
   const handleCancelPurchase = async (purchaseId: number) => {
     setCancellingPurchaseId(purchaseId)
@@ -36,13 +35,11 @@ export function useCustomerDashboard() {
     stats,
     purchases: purchasesState.purchases,
     reservations: reservationsState.reservations,
-    isLoading,
-    isError,
-    isSessionCache: purchasesState.isSessionCache && reservationsState.isSessionCache,
+    isSummaryLoading,
+    purchasesState,
+    reservationsState,
     cancellingPurchaseId,
     cancelPurchase,
-    handleCancelPurchase,
-    refetchPurchases: purchasesState.refetch,
-    refetchReservations: reservationsState.refetch
+    handleCancelPurchase
   }
 }
