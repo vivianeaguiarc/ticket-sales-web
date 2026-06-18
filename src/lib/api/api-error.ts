@@ -64,6 +64,40 @@ export function getRegisterErrorMessage(error: unknown): string {
   return FRIENDLY_REGISTER_ERROR
 }
 
+const FRIENDLY_TICKET_CONFLICT =
+  'Um ou mais ingressos selecionados não estão mais disponíveis. Atualize a seleção e tente novamente.'
+const FRIENDLY_CUSTOMER_ONLY = 'Esta operação está disponível apenas para contas de cliente.'
+
+export function getTicketOperationErrorMessage(
+  error: unknown,
+  fallback = FRIENDLY_GENERIC_ERROR
+): string {
+  if (!isAxiosError(error)) {
+    return fallback
+  }
+
+  if (!error.response) {
+    return FRIENDLY_NETWORK_ERROR
+  }
+
+  const status = error.response.status
+  const message = extractApiMessage(error)
+
+  if (status === 409) {
+    return FRIENDLY_TICKET_CONFLICT
+  }
+
+  if (status === 400 && message?.toLowerCase().includes('customer')) {
+    return FRIENDLY_CUSTOMER_ONLY
+  }
+
+  if (status === 404) {
+    return 'Ingresso não encontrado. Atualize a página e tente novamente.'
+  }
+
+  return fallback
+}
+
 export function getApiErrorMessage(error: unknown, fallback = FRIENDLY_GENERIC_ERROR): string {
   if (!isAxiosError(error)) {
     return fallback

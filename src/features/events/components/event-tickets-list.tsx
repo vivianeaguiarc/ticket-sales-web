@@ -13,22 +13,29 @@ import type { Ticket as EventTicket } from '@/features/events/types/event-types'
 import { formatCurrency } from '@/lib/utils/format'
 
 type EventTicketsListProps = {
+  eventId: number
   tickets: EventTicket[]
   isLoading: boolean
   isError: boolean
   requiresAuth: boolean
+  canPurchase?: boolean
   errorMessage?: string | null
   onRetry?: () => void
 }
 
 export function EventTicketsList({
+  eventId,
   tickets,
   isLoading,
   isError,
   requiresAuth,
+  canPurchase = false,
   errorMessage,
   onRetry
 }: EventTicketsListProps) {
+  const purchasePath = `/customer/purchase/${eventId}`
+  const loginHref = `/login?redirect=${encodeURIComponent(purchasePath)}`
+
   if (requiresAuth) {
     return (
       <Card className="border-border bg-white">
@@ -37,13 +44,13 @@ export function EventTicketsList({
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Faça login ou crie uma conta para visualizar ingressos disponíveis e reservar ou
-            comprar.
+            Faça login ou crie uma conta de cliente para visualizar ingressos disponíveis e reservar
+            ou comprar.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button
               className="bg-primary text-primary-foreground hover:bg-primary/90"
-              render={<Link href="/login" />}
+              render={<Link href={loginHref} />}
             >
               Entrar
             </Button>
@@ -94,14 +101,19 @@ export function EventTicketsList({
               : 'No momento não há ingressos disponíveis.'}
           </p>
         </div>
-        {availableCount > 0 ? (
+        {availableCount > 0 && canPurchase ? (
           <Button
             className="bg-primary text-primary-foreground hover:bg-primary/90"
-            render={<Link href="/login" />}
+            render={<Link href={purchasePath} />}
           >
             <Ticket className="size-4" />
             Reservar / Comprar
           </Button>
+        ) : null}
+        {availableCount > 0 && !canPurchase ? (
+          <p className="text-sm text-muted-foreground">
+            Reservas e compras estão disponíveis apenas para contas de cliente.
+          </p>
         ) : null}
       </div>
 

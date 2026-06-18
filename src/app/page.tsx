@@ -1,10 +1,6 @@
 import {
   ArrowRight,
-  CalendarDays,
-  ChevronRight,
-  Clock3,
   Headphones,
-  MapPin,
   RefreshCw,
   ShieldCheck,
   Ticket,
@@ -16,7 +12,7 @@ import Link from 'next/link'
 
 import { Container } from '@/components/layout/container'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { FeaturedEventsSection } from '@/features/events/components/featured-events-section'
 
 const features = [
   {
@@ -38,53 +34,6 @@ const features = [
     icon: Headphones,
     title: 'Suporte dedicado',
     description: 'Equipe pronta para ajudar antes, durante e após o evento.'
-  }
-]
-
-const featuredEvents = [
-  {
-    id: 1,
-    title: 'Festival Sunset Vibes',
-    category: 'Festival',
-    categoryClass: 'bg-emerald-100 text-emerald-700',
-    date: '15 Ago 2026 · 18:00',
-    location: 'Praia de Copacabana, RJ',
-    price: '120,00',
-    image:
-      'https://images.unsplash.com/photo-1459749411175-04bf529298ce?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 2,
-    title: 'Stand Up Comedy Night',
-    category: 'Stand Up',
-    categoryClass: 'bg-amber-100 text-amber-700',
-    date: '22 Ago 2026 · 20:30',
-    location: 'Teatro Municipal, SP',
-    price: '85,00',
-    image:
-      'https://images.unsplash.com/photo-1585699323591-3711e3b9fc87?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 3,
-    title: 'Rock in Rio Experience',
-    category: 'Show',
-    categoryClass: 'bg-brand-soft text-primary',
-    date: '05 Set 2026 · 16:00',
-    location: 'Parque Olímpico, RJ',
-    price: '350,00',
-    image:
-      'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 4,
-    title: 'Orquestra Sinfônica',
-    category: 'Show',
-    categoryClass: 'bg-brand-soft text-primary',
-    date: '12 Set 2026 · 19:00',
-    location: 'Sala São Paulo, SP',
-    price: '200,00',
-    image:
-      'https://images.unsplash.com/photo-1465847899284-01109834b63f?auto=format&fit=crop&w=800&q=80'
   }
 ]
 
@@ -159,29 +108,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <section className="bg-white py-16 sm:py-20">
-        <Container>
-          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="flex items-center gap-2">
-              <CalendarDays className="size-5 text-primary" />
-              <h2 className="text-2xl font-bold text-brand-dark">Eventos em destaque</h2>
-            </div>
-            <Link
-              href="/events"
-              className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80"
-            >
-              Ver todos os eventos
-              <ChevronRight className="size-4" />
-            </Link>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-            {featuredEvents.map((event) => (
-              <EventCard key={event.id} {...event} />
-            ))}
-          </div>
-        </Container>
-      </section>
+      <FeaturedEventsSection />
 
       <section id="sobre" className="bg-brand-cream py-12 sm:py-16">
         <Container>
@@ -230,74 +157,5 @@ function FeatureItem({ icon: Icon, title, description }: FeatureItemProps) {
         <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
       </div>
     </div>
-  )
-}
-
-type EventCardProps = {
-  title: string
-  category: string
-  categoryClass: string
-  date: string
-  location: string
-  price: string
-  image: string
-}
-
-function EventCard({
-  title,
-  category,
-  categoryClass,
-  date,
-  location,
-  price,
-  image
-}: EventCardProps) {
-  return (
-    <article className="group overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-shadow hover:shadow-md">
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-          sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
-        />
-      </div>
-
-      <div className="p-4">
-        <span
-          className={cn('inline-flex rounded-md px-2 py-0.5 text-xs font-semibold', categoryClass)}
-        >
-          {category}
-        </span>
-
-        <h3 className="mt-2 line-clamp-2 text-base font-bold text-brand-dark">{title}</h3>
-
-        <div className="mt-3 space-y-1.5 text-sm text-muted-foreground">
-          <p className="flex items-center gap-2">
-            <Clock3 className="size-3.5 shrink-0" />
-            {date}
-          </p>
-          <p className="flex items-center gap-2">
-            <MapPin className="size-3.5 shrink-0" />
-            {location}
-          </p>
-        </div>
-
-        <div className="mt-4 flex items-center justify-between">
-          <p className="text-sm">
-            <span className="text-muted-foreground">A partir de </span>
-            <span className="font-bold text-primary">R$ {price}</span>
-          </p>
-          <Link
-            href="/events"
-            className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
-            aria-label={`Ver detalhes de ${title}`}
-          >
-            <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </div>
-    </article>
   )
 }

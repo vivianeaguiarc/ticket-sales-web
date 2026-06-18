@@ -6,6 +6,7 @@ import { use } from 'react'
 import { Container } from '@/components/layout/container'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 import { EventDetailsHeader } from '@/features/events/components/event-details-header'
 import { EventTicketsList } from '@/features/events/components/event-tickets-list'
 import { EventsErrorState } from '@/features/events/components/events-error-state'
@@ -18,7 +19,9 @@ type EventDetailsPageContentProps = {
 
 export function EventDetailsPageContent({ params }: EventDetailsPageContentProps) {
   const { id } = use(params)
+  const { user } = useAuth()
   const { event, isLoading, isError, isNotFound, errorMessage, refetch } = useEventDetails(id)
+  const canPurchase = user?.role === 'customer'
   const {
     tickets,
     isLoading: isTicketsLoading,
@@ -73,10 +76,12 @@ export function EventDetailsPageContent({ params }: EventDetailsPageContentProps
 
         {!isLoading && !isError && event ? (
           <EventTicketsList
+            eventId={event.id}
             tickets={tickets}
             isLoading={isTicketsLoading}
             isError={isTicketsError}
             requiresAuth={requiresAuth}
+            canPurchase={canPurchase}
             errorMessage={ticketsErrorMessage}
             onRetry={() => refetchTickets()}
           />
